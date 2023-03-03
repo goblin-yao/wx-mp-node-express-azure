@@ -9,11 +9,28 @@
     <p>Welcome to <%= title %></p>
     <p>question: <input id="question" value="1+1=?" /></p>
     <p><button id="submit">Submit</button></p>
+    <p><button id="submit_post">SubmitPost</button></p>
     <p><button id="getModels">getModels</button></p>
     <p><textarea id="result_textare" cols="100" rows="50"></textarea></p>
 
     <script>
       submit.onclick = function () {
+        fetch(`/api/chat?question=${encodeURIComponent(question.value)}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("success=>", data);
+            result_textare.value = data.text;
+          })
+          .catch((data) => {
+            console.log("error=>", data);
+          });
+      };
+      submit_post.onclick = function () {
         fetch("/api/chat", {
           method: "POST",
           headers: {

@@ -30,6 +30,17 @@ router.post("/chat", async function (req, res, next) {
   }
   res.send(response);
 });
+router.get("/chat", async function (req, res, next) {
+  const { question } = req.query;
+  // send a message and wait for the response
+  let response = { question };
+  try {
+    response = await getChatGPTAPI().sendMessage(question);
+  } catch (error) {
+    response.error = error;
+  }
+  res.send(response);
+});
 
 router.get("/getModels", async (req, res) => {
   // send a message and wait for the response
