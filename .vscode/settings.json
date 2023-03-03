@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/ce2afc93-5bb6-4b43-8c67-1f928ad5895e/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/wxchatnodeexpressazure",
+    "appService.deploySubpath": "."
+}

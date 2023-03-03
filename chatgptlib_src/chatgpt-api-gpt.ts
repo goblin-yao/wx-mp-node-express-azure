@@ -86,7 +86,7 @@ export class ChatGPTAPITURBO {
       messageStore,
       completionParams,
       maxModelTokens = 4096, //4096
-      maxResponseTokens = 2000, //1000
+      maxResponseTokens = 1500, //1000
       userLabel = USER_LABEL_DEFAULT,
       assistantLabel = ASSISTANT_LABEL_DEFAULT,
       getMessageById = this._defaultGetMessageById,
@@ -226,8 +226,6 @@ export class ChatGPTAPITURBO {
               Authorization: `Bearer ${this._apiKey}`,
             },
           });
-
-          console.log("response=>", response);
 
           if (200 != response.status) {
             const msg = `ChatGPT error ${

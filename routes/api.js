@@ -15,6 +15,7 @@ function getChatGPTAPI() {
   if (process.env.CHATGPT_MODEL === "gpt-3.5-turbo") {
     return chatGPTTurboapi;
   }
+  return chatGPTapi;
   return Math.random() > 0.5 ? chatGPTTurboapi : chatGPTapi;
 }
 

@@ -85,8 +85,8 @@ export class ChatGPTAPI {
       debug = false,
       messageStore,
       completionParams,
-      maxModelTokens = 4096, //4096
-      maxResponseTokens = 2000, //1000
+      maxModelTokens = 2048, //4096
+      maxResponseTokens = 1000, //1000
       userLabel = USER_LABEL_DEFAULT,
       assistantLabel = ASSISTANT_LABEL_DEFAULT,
       getMessageById = this._defaultGetMessageById,
@@ -198,6 +198,16 @@ export class ChatGPTAPI {
     await this._upsertMessage(message);
 
     const { prompt, maxTokens } = await this._buildPrompt(text, opts);
+    console.log("prompt&maxTokens=>", { prompt, maxTokens });
+    if (maxTokens < 0) {
+      return new Promise((resolve, reject) => {
+        return reject({
+          statusCode: -2,
+          data: "问题太长了",
+        });
+      });
+    }
+
     const result: types.ChatMessage = {
       role: "assistant",
       id: uuidv4(),
@@ -230,8 +240,6 @@ export class ChatGPTAPI {
               Authorization: `Bearer ${this._apiKey}`,
             },
           });
-
-          console.log("response=>", response);
 
           if (200 != response.status) {
             const msg = `ChatGPT error ${
@@ -266,7 +274,7 @@ export class ChatGPTAPI {
 
           return resolve(result);
         } catch (error) {
-          console.log("error=>", error);
+          console.log("error=>", error?.response?.data);
           return reject({
             statusCode: error?.response?.status || -1,
             data: error?.response?.data || "服务内部错误",
@@ -392,7 +400,7 @@ export class ChatGPTAPI {
     // Use up to 4096 tokens (prompt + response), but try to leave 1000 tokens
     // for the response.
     const maxTokens = Math.max(
-      1,
+      -1,
       Math.min(this._maxModelTokens - numTokens, this._maxResponseTokens)
     );
     return { prompt, maxTokens };
