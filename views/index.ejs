@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <p>question: <input id="question" value="1+1=?" /></p>
+    <p><button id="submit">Submit</button></p>
+    <p><button id="getModels">getModels</button></p>
+    <p><textarea id="result_textare" cols="100" rows="50"></textarea></p>
+
+    <script>
+      submit.onclick = function () {
+        fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ question: question.value }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("success=>", data);
+            result_textare.value = data.text;
+          })
+          .catch((data) => {
+            console.log("error=>", data);
+          });
+      };
+      getModels.onclick = function () {
+        fetch("/api/getModels", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            result_textare.value = JSON.stringify(data);
+            console.log("success models=>", data);
+          })
+          .catch((data) => {
+            console.log("error=>", data);
+          });
+      };
+    </script>
+  </body>
+</html>
