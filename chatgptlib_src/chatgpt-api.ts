@@ -235,7 +235,7 @@ export class ChatGPTAPI {
 
         try {
           const response = await axios.post(url, body, {
-            timeout: 300000,
+            timeout: 30000,
             headers: {
               Authorization: `Bearer ${this._apiKey}`,
             },
@@ -274,9 +274,9 @@ export class ChatGPTAPI {
 
           return resolve(result);
         } catch (error) {
-          console.log("error=>", error?.response?.data);
+          console.log("error=>", error);
           return reject({
-            statusCode: error?.response?.status || -1,
+            statusCode: error?.response?.status || -1003,
             data: error?.response?.data || "服务内部错误",
           });
         }
@@ -436,7 +436,7 @@ export class ChatGPTAPI {
   protected async _defaultUpsertMessage(
     message: types.ChatMessage
   ): Promise<void> {
-    console.log("==>upsertMessage>", message.id, message);
+    // console.log("==>upsertMessage>", message.id, message);
     await this._messageStore.set(message.id, message);
   }
 }

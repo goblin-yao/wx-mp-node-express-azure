@@ -12,10 +12,9 @@ const chatGPTTurboapi = new chatgptlib.ChatGPTAPITURBO({
 });
 
 function getChatGPTAPI() {
-  if (process.env.CHATGPT_MODEL === "gpt-3.5-turbo") {
-    return chatGPTTurboapi;
-  }
-  return chatGPTapi;
+  // if (process.env.CHATGPT_MODEL === "gpt-3.5-turbo") {
+  //   return chatGPTTurboapi;
+  // }
   return Math.random() > 0.5 ? chatGPTTurboapi : chatGPTapi;
 }
 
@@ -23,9 +22,12 @@ router.post("/chat", async function (req, res, next) {
   const { question } = req.body;
   // send a message and wait for the response
   let response = { question };
+  const statTime = new Date();
   try {
     response = await getChatGPTAPI().sendMessage(question);
+    console.log("post request time=>", new Date() - statTime);
   } catch (error) {
+    console.log("post request error time=>", new Date() - statTime);
     response.error = error;
   }
   res.send(response);
@@ -34,9 +36,12 @@ router.get("/chat", async function (req, res, next) {
   const { question } = req.query;
   // send a message and wait for the response
   let response = { question };
+  const statTime = new Date();
   try {
     response = await getChatGPTAPI().sendMessage(question);
+    console.log("get request time=>", new Date() - statTime);
   } catch (error) {
+    console.log("get request error time=>", new Date() - statTime);
     response.error = error;
   }
   res.send(response);
