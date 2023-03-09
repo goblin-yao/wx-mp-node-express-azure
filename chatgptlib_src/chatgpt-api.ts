@@ -255,6 +255,7 @@ export class ChatGPTAPI {
             result.id = response.data.id;
           }
 
+          console.log("response?.data?=>", response?.data);
           if (response?.data?.choices?.length) {
             result.text = response.data.choices[0].text.trim();
           } else {
@@ -268,7 +269,7 @@ export class ChatGPTAPI {
             );
           }
 
-          result.detail = response.data;
+          result.detail = { model: response?.data?.model || "" };
 
           console.log("==>result>", result);
 
