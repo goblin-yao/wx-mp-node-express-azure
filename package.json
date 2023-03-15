@@ -20,6 +20,7 @@
     "express": "~4.16.1",
     "gpt-3-encoder": "^1.1.4",
     "http-errors": "~1.6.3",
+    "http-proxy": "^1.18.1",
     "keyv": "^4.5.2",
     "morgan": "^1.10.0",
     "p-timeout": "^4.1.0",
