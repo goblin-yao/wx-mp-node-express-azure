@@ -6,7 +6,6 @@
 
 var app = require("../app");
 var debug = require("debug")("wxmpexpressapp:server");
-var httpProxy = require("../http-proxy");
 var http = require("http");
 
 /**
@@ -14,7 +13,6 @@ var http = require("http");
  */
 
 var port = normalizePort(process.env.PORT || "80");
-var proxyPort = normalizePort(process.env.PROXY_PORT || "8080");
 app.set("port", port);
 
 /**
@@ -28,10 +26,6 @@ var server = http.createServer(app);
  */
 
 server.listen(port);
-
-httpProxy.listen(proxyPort, () => {
-  console.log(`Proxy server listening on port ${proxyPort}`);
-});
 
 server.on("error", onError);
 server.on("listening", onListening);
