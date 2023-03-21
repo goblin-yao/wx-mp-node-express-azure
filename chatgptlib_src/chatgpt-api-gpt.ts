@@ -208,20 +208,27 @@ export class ChatGPTAPITURBO {
 
     const responseP = new Promise<types.ChatMessage>(
       async (resolve, reject) => {
-        const url =
-          this._apiReverseProxyUrl || `${this._apiBaseUrl}/v1/chat/completions`;
+        const url = `${
+          this._apiReverseProxyUrl || this._apiBaseUrl
+        }/v1/chat/completions`;
 
         const body = {
           max_tokens: maxTokens,
           ...this._completionParams,
-          messages: [{ role: "user", content: text }],
+          messages: [
+            {
+              role: "system",
+              content: `你是${this._assistantLabel}.使用简洁，拟人化的方式回答问题`,
+            },
+            { role: "user", content: text },
+          ],
           stream,
         };
         console.log("/v1/chat/completions body=>>", JSON.stringify(body));
 
         try {
           const response = await axios.post(url, body, {
-            timeout: 300000,
+            timeout: 60000,
             headers: {
               Authorization: `Bearer ${this._apiKey}`,
             },
@@ -294,11 +301,11 @@ export class ChatGPTAPITURBO {
   // https://platform.openai.com/docs/api-reference/models/list
   async getModels() {
     return new Promise<types.ChatMessage>(async (resolve, reject) => {
-      const url = this._apiReverseProxyUrl || `${this._apiBaseUrl}/v1/models`;
+      const url = `${this._apiReverseProxyUrl || this._apiBaseUrl}/v1/models`;
 
       try {
         const response = await axios.get(url, {
-          timeout: 30000,
+          timeout: 60000,
           headers: {
             Authorization: `Bearer ${this._apiKey}`,
           },
